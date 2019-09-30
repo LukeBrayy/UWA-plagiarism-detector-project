@@ -6,10 +6,16 @@
 def clearWhiteSpacePunctuation(inString):
     #project description:
     # "any other punctuation or letters eg:'.' when not at the end of a sentence, should be regarded as white space so serve to end words"
-    whiteSpacePunctuation = ['!', '"', '#', '$', '%', '&', '(', ')', '*', '+', '/', ':', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', "--", "- ", " -", " '", "' ", ". ", " ."]
+    whiteSpacePunctuation = ['!', '"', '#', '$', '%', '&', '(', ')', '*', '+', '/', ':', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', "--", "- ", " -", " '", "' "]
     for punctuation in whiteSpacePunctuation:
         inString.replace(punctuation, " ")
+
+    for x in range(0, len(inString)): #removes all the fullstops in the line that are directly adjacent letters
+        if inString[x] == ".":
+            if inString[x-1] != " " and inString[x+1] != " ":
+                inString = inString[:x] + " " + inString[x+1:]
     return(inString)
+
 
 
 def getPunctuationProfile(fileName):
@@ -47,12 +53,39 @@ def getUnigramProfile(fileName):
                 profile[word] = profile.get(word, 0) + 1
     return(profile)
 
+def getAverage(filename): #returns the average amount of words in the sentences
+    #and the avergage amount of sentences in the file
+    wordCount = 0
+    sentenceCount = 0
+    paragraphCount
+    with open(filename, "r") as text:
+        wordCount = 0
+        sentenceCount = 0
+        for line in filename.readline():
+            line = clearWhiteSpacePunctuation(line)
+            for word in line.split(" "):
+                wordCount += 1
+                if word[0] ==".":
+                    sentenceCount += 1
+                if word[-1] == ".":
+                    sentenceCount += 1
+            if line == "" or " ":
+                paragraphCount += 1
+    averageWordsPerSentence = wordCount / sentenceCount
+    averageSentencesPerParagraph = sentenceCount / paragraphCount
+    return([averageWordsPerSentence, averageSentencesPerParagraph])
+
+
+
+
 def composite(filename):
     compositeProfile = {}
     punctuationProfile = getPunctuationProfile(filename)
     conjuctionProfile = getConjuctionProfile(filename)
     compositeProfile.update(punctuationProfile)
     compositeProfile.update(conjuctionProfile)
+
+    getAverages(filename)
 
 
 
