@@ -3,9 +3,11 @@
 #
 #
 #
+import math
 def clearWhiteSpacePunctuation(inString):
     #project description:
     # "any other punctuation or letters eg:'.' when not at the end of a sentence, should be regarded as white space so serve to end words"
+    instring = instring.lower().rstrip()
     whiteSpacePunctuation = ['!', '"', '#', '$', '%', '&', '(', ')', '*', '+', '/', ':', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', "--", "- ", " -", " '", "' "]
     for punctuation in whiteSpacePunctuation:
         inString.replace(punctuation, " ")
@@ -14,7 +16,7 @@ def clearWhiteSpacePunctuation(inString):
         if inString[x] == ".":
             if inString[x-1] != " " and inString[x+1] != " ":
                 inString = inString[:x] + " " + inString[x+1:]
-    return(inString)
+    return inString
 
 
 
@@ -22,9 +24,7 @@ def getPunctuationProfile(fileName):
     #punctuation characters tested are ; , " -
     profile = {}
     with open(fileName, "r") as text:
-        my_dict[some_key] = my_dict.get(some_key, 0) + 1
-
-        for line in text.readline(): #streams in line by line to avoid loading very large files at once, which make cause performance issues
+        for line in text: #streams in line by line to avoid loading very large files at once, which make cause performance issues
             profile[','] = profile.get(',', 0) + line.count(",")
             profile[';'] = profile.get(';', 0) + line.count(";")
 
@@ -39,15 +39,16 @@ def getConjuctionProfile(fileName):
     conjuctions = ["also", "although", "and", "as", "because", "before", "but", "for", "if", "nor", "of", "or", "since", "that", "though", "until", "when", "whenever", "whereas", "which", "while", "yet"]
     profile = {}
     with open(fileName, "r") as text:
-        for line in text.readline():
+        for line in text:
+            line = line.lower().rstrip()
             for word in conjuctions:
                 profile[word] = profile.get(word, 0) + line.count(word)
     return(profile)
 
 def getUnigramProfile(fileName):
     profile = {}
-    with open(fileName, "r") as textfile:
-        for line in textfile.readline():
+    with open(fileName, "r") as text:
+        for line in text:
             line = clearWhiteSpacePunctuation(line)
             for word in line.split(" "):
                 profile[word] = profile.get(word, 0) + 1
@@ -61,7 +62,7 @@ def getAverage(filename): #returns the average amount of words in the sentences
     with open(filename, "r") as text:
         wordCount = 0
         sentenceCount = 0
-        for line in filename.readline():
+        for line in text:
             line = clearWhiteSpacePunctuation(line)
             for word in line.split(" "):
                 wordCount += 1
@@ -75,22 +76,50 @@ def getAverage(filename): #returns the average amount of words in the sentences
     averageSentencesPerParagraph = sentenceCount / paragraphCount
     return([averageWordsPerSentence, averageSentencesPerParagraph])
 
-
-
-
-def composite(filename):
+def getCompositeProfile(filename):
     compositeProfile = {}
     punctuationProfile = getPunctuationProfile(filename)
     conjuctionProfile = getConjuctionProfile(filename)
     compositeProfile.update(punctuationProfile)
     compositeProfile.update(conjuctionProfile)
 
-    getAverages(filename)
+    averages = getAverages(filename)
+    compositeProfile['averageWordsPerSentence'] = averages[0]
+    compositeProfile['averageSentencesPerParagraph'] = averages[1]
+    return(compositeProfile)
+
+def compareProfiles(profile1, profile2):
+    sumOfDifferences = 0
+    for item in profile1:
+        sumOfDifferences += profile1[item] - profile2[item]
+    score = (sumOfDifferences ** 2)**0.5
+    return(score)
 
 
 
-
-def main(filePath1, filePath2, feature):)
-    if feature not in ["punctuation", "unigrams", "conjuctions", "composite"]:
+def main(filePath1, filePath2, feature):
+    if feature == "punctuation":
+        profile1 = getPunctuationProfile(filePath1)
+        profile2 = getPunctuationProfile(filePath2)
+    elif feature == "unigrams":
+        profile1 = getUnigramProfile(filePath1)
+        profile2 = getUnigramProfile(filePath2)
+    elif feature == "conjunctions":
+        profile1 = getConjuctionProfile(filePath1)
+        profile2 = getConjuctionProfile(filePath2)
+    elif feature == "composite":
+        profile1 = getCompositeProfile(filePath1)
+        profile2 = getCompositeProfile(filePath2)
+    else:
         print("The feature given was not acceptible")
         raise ValueError("Feature given is not acceptible")
+
+    score = compareProfiles(profile1, profile2)
+
+    print(score)
+    print(profile1)
+    print(profile2)
+    input(":")
+
+
+main("C:/Users/mooki/OneDrive/My Documents/GitHub/cits1401-Project2/project2data/project2data/Banjo_Paterson.txt", "dud", input("feature: "))
