@@ -7,15 +7,17 @@ import math
 def clearWhiteSpacePunctuation(inString):
     #project description:
     # "any other punctuation or letters eg:'.' when not at the end of a sentence, should be regarded as white space so serve to end words"
-    instring = instring.lower().rstrip()
+    inString = inString.lower().rstrip()
     whiteSpacePunctuation = ['!', '"', '#', '$', '%', '&', '(', ')', '*', '+', '/', ':', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', "--", "- ", " -", " '", "' "]
     for punctuation in whiteSpacePunctuation:
-        inString.replace(punctuation, " ")
+        inString = inString.replace(punctuation, " ")
 
     for x in range(0, len(inString)): #removes all the fullstops in the line that are directly adjacent letters
         if inString[x] == ".":
-            if inString[x-1] != " " and inString[x+1] != " ":
-                inString = inString[:x] + " " + inString[x+1:]
+            if x+1 < len(inString):
+                if inString[x-1] != " " and inString[x+1] != " ":
+                    inString = inString[:x] + " " + inString[x+1:]
+
     return inString
 
 
@@ -32,6 +34,12 @@ def getPunctuationProfile(fileName):
 
             profile["-"] = profile.get("-", 0) + line.count("-")
             profile["'"] = profile.get("'", 0) + line.count("'")
+            if line:
+                if line[0] == "'":
+                    profile["'"] -= 1
+                if len(line) >1:
+                    if line[-1] == "'":
+                        profile["'"] -= 1
 
     return(profile)
 
@@ -40,7 +48,10 @@ def getConjuctionProfile(fileName):
     profile = {}
     with open(fileName, "r") as text:
         for line in text:
-            line = line.lower().rstrip()
+            line = clearWhiteSpacePunctuation(line)
+            line = line.replace(".", "")
+            line = line.replace(",", "")
+            line = line.split(" ")
             for word in conjuctions:
                 profile[word] = profile.get(word, 0) + line.count(word)
     return(profile)
@@ -50,30 +61,33 @@ def getUnigramProfile(fileName):
     with open(fileName, "r") as text:
         for line in text:
             line = clearWhiteSpacePunctuation(line)
+            line.replace(".", "")
+            line.replace(",", "")
             for word in line.split(" "):
                 profile[word] = profile.get(word, 0) + 1
     return(profile)
 
-def getAverage(filename): #returns the average amount of words in the sentences
+def getAverages(filename): #returns the average amount of words in the sentences
     #and the avergage amount of sentences in the file
     wordCount = 0
     sentenceCount = 0
-    paragraphCount
+    paragraphCount = 1
     with open(filename, "r") as text:
-        wordCount = 0
-        sentenceCount = 0
         for line in text:
             line = clearWhiteSpacePunctuation(line)
             for word in line.split(" "):
-                wordCount += 1
-                if word[0] ==".":
-                    sentenceCount += 1
-                if word[-1] == ".":
-                    sentenceCount += 1
-            if line == "" or " ":
+                if word:
+                    wordCount += 1
+                    if word[0] == ".":
+                        sentenceCount += 1
+                    if word[-1] == ".":
+                        sentenceCount += 1
+            print("|"+line+"|")
+            if line == "":
                 paragraphCount += 1
     averageWordsPerSentence = wordCount / sentenceCount
     averageSentencesPerParagraph = sentenceCount / paragraphCount
+    print(wordCount, sentenceCount, paragraphCount)
     return([averageWordsPerSentence, averageSentencesPerParagraph])
 
 def getCompositeProfile(filename):
@@ -84,15 +98,15 @@ def getCompositeProfile(filename):
     compositeProfile.update(conjuctionProfile)
 
     averages = getAverages(filename)
-    compositeProfile['averageWordsPerSentence'] = averages[0]
-    compositeProfile['averageSentencesPerParagraph'] = averages[1]
+    compositeProfile['words_per_sentence'] = averages[0]
+    compositeProfile['sentences_per_par'] = averages[1]
     return(compositeProfile)
 
 def compareProfiles(profile1, profile2):
     sumOfDifferences = 0
     for item in profile1:
-        sumOfDifferences += profile1[item] - profile2[item]
-    score = (sumOfDifferences ** 2)**0.5
+        sumOfDifferences += (profile1[item] - profile2[item])**2
+    score = sumOfDifferences**0.5
     return(score)
 
 
@@ -116,10 +130,12 @@ def main(filePath1, filePath2, feature):
 
     score = compareProfiles(profile1, profile2)
 
-    print(score)
-    print(profile1)
-    print(profile2)
+    testDict2 = {'also': 0, 'although': 0, 'and': 27, 'as': 2, 'because': 0, 'before': 2, 'but': 4, 'for': 2, 'if': 2, 'nor': 0, 'of': 13, 'or': 2, 'since': 0, 'that': 10, 'though': 2, 'until': 0, 'when': 3, 'whenever': 0, 'whereas': 0, 'which': 0, 'while': 0, 'yet': 0, ',': 41, ';': 3, '-': 1, "'": 17, 'words_per_sentence': 25.4286, 'sentences_per_par': 1.75}
+
+    for item in testDict2:
+        if testDict2[item] != profile2[item]:
+            print(item, "~", testDict2[item], profile2[item])
     input(":")
 
-
-main("C:/Users/mooki/OneDrive/My Documents/GitHub/cits1401-Project2/project2data/project2data/Banjo_Paterson.txt", "dud", input("feature: "))
+testBase = "C:/Users/mooki/OneDrive/My Documents/GitHub/cits1401-Project2/project2data/project2data/"
+main(testBase+"sample1.txt", testBase+"sample2.txt", "composite")
