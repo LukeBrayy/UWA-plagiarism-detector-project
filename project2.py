@@ -1,8 +1,7 @@
 #Project2 for cits1401 by Luke Bray at the University of Western Australia
 #Assumptions:
-#
-#
-#
+#   -no words are split across two lines with a hyphen
+
 import math
 def clearWhiteSpacePunctuation(inString):
     #project description:
@@ -11,17 +10,12 @@ def clearWhiteSpacePunctuation(inString):
     whiteSpacePunctuation = ['#', '$', '%', '&', '(', ')', '*', '+', '/', ':', '<', '=', '>', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', "--", "- ", " -", " '", "' ", " ."]
     for punctuation in whiteSpacePunctuation:
         inString = inString.replace(punctuation, " ")
-
     for x in range(0, len(inString)): #removes all the fullstops in the line that are directly adjacent letters
         if inString[x] == ".":
-
             if x+1 < len(inString):
                 if inString[x-1] in " " and inString[x+1] != " ":
                     inString = inString[:x] + " " + inString[x+1:]
-
     return inString
-
-
 
 def getPunctuationProfile(fileName):
     #punctuation characters tested are ; , " -
@@ -50,7 +44,6 @@ def getPunctuationProfile(fileName):
                             profile["-"] = profile.get("-", 0) + 1
                     except IndexError:
                         pass #character isn't relevant anyway as it can't be surrounded by letters
-
     return(profile)
 
 def getConjuctionProfile(fileName):
@@ -122,6 +115,14 @@ def compareProfiles(profile1, profile2):
     score = sumOfDifferences**0.5
     return(score)
 
+def equalizeProfiles(profile1, profile2): #makes sure both profiles have every item from the other profile in it
+    for item in profile1:
+        if item not in profile2:
+            profile2[item] = 0
+    for item in profile2:
+        if item not in profile1:
+            profile1[item] = 0
+    return([profile1, profile2])
 
 
 def main(filePath1, filePath2, feature):
@@ -131,6 +132,8 @@ def main(filePath1, filePath2, feature):
     elif feature == "unigrams":
         profile1 = getUnigramProfile(filePath1)
         profile2 = getUnigramProfile(filePath2)
+        equalProfiles = equalizeProfiles(profile1, profile2)
+        profile1, profile2 = equalProfiles[0], equalProfiles[1]
     elif feature == "conjunctions":
         profile1 = getConjuctionProfile(filePath1)
         profile2 = getConjuctionProfile(filePath2)
@@ -141,20 +144,12 @@ def main(filePath1, filePath2, feature):
         print("The feature given was not acceptible")
         raise ValueError("Feature given is not acceptible")
 
-    score = compareProfiles(profile1, profile2)
-    testDict1 = {'also': 1, 'although': 0, 'and': 13, 'as': 8, 'because': 0, 'before': 0, 'but': 2, 'for': 0, 'if': 0, 'nor': 0, 'of': 8, 'or': 0, 'since': 1, 'that': 6, 'though': 0, 'until': 1, 'when': 0, 'whenever': 0, 'whereas': 0, 'which': 0, 'while': 0, 'yet': 0, ',': 27, ';': 5, '-': 10, "'": 1, 'words_per_sentence': 26.75, 'sentences_per_par': 6.0}
-    testDict2 = {'also': 0, 'although': 0, 'and': 27, 'as': 2, 'because': 0, 'before': 2, 'but': 4, 'for': 2, 'if': 2, 'nor': 0, 'of': 13, 'or': 2, 'since': 0, 'that': 10, 'though': 2, 'until': 0, 'when': 3, 'whenever': 0, 'whereas': 0, 'which': 0, 'while': 0, 'yet': 0, ',': 41, ';': 3, '-': 1, "'": 17, 'words_per_sentence': 25.4286, 'sentences_per_par': 1.75}
+    score = round(compareProfiles(profile1, profile2),4)
+    print(score)
+    print(profile1)
+    print(profile2)
 
-
-    for item in testDict2:
-        if testDict2[item] != profile2[item]:
-            print("sample2:", item, "~", testDict2[item], profile2[item])
-
-    for item in testDict1:
-        if testDict1[item] != profile1[item]:
-            print("sample1:", item, "~", testDict1[item], profile1[item])
-    print(round(score,4))
     input(":")
 
 testBase = "C:/Users/mooki/OneDrive/My Documents/GitHub/cits1401-Project2/project2data/project2data/"
-main(testBase+"sample1.txt", testBase+"sample2.txt", "composite")
+main(testBase+"sample1.txt", testBase+"sample2.txt", "unigrams")
