@@ -1,0 +1,22 @@
+main(testBase+"Banjo_Paterson.txt", testBase+"Hucklebery_Finn.txt","composite")
+8986.1227
+{',': 2334, ';': 226, "'": 531, '-': 471, 'also': 6, 'although': 1, 'and': 1282, 'as': 240, 'because': 17, 'before': 33, 'but': 188, 'for': 278, 'if': 117, 'nor': 7, 'of': 820, 'or': 113, 'since': 0, 'that': 340, 'though': 11, 'until': 9, 'when': 106, 'whenever': 0, 'whereas': 0, 'which': 47, 'while': 54, 'yet': 5, 'words_per_sentence': 18.5775, 'sentences_per_par': 2.4563}
+{',': 8190, ';': 1562, '-': 1064, "'": 4390, 'also': 4, 'although': 0, 'and': 6425, 'as': 553, 'because': 223, 'before': 163, 'but': 1041, 'for': 873, 'if': 425, 'nor': 61, 'of': 1767, 'or': 397, 'since': 13, 'that': 1082, 'though': 34, 'until': 3, 'when': 430, 'whenever': 11, 'whereas': 1, 'which': 121, 'while': 49, 'yet': 57, 'words_per_sentence': 18.3323, 'sentences_per_par': 2.512}
+
+main(testBase +"Lawrence_Kangaroo.txt", testBase + "Lawrence_Sea_Sardinia.txt","composite")
+7389.2327
+{',': 12092, ';': 114, '-': 1852, "'": 2816, 'also': 55, 'although': 1, 'and': 5390, 'as': 1024, 'because': 135, 'before': 121, 'but': 1138, 'for': 950, 'if': 627, 'nor': 25, 'of': 4029, 'or': 562, 'since': 35, 'that': 1245, 'though': 73, 'until': 7, 'when': 337, 'whenever': 1, 'whereas': 10, 'which': 240, 'while': 71, 'yet': 192, 'words_per_sentence': 12.1638, 'sentences_per_par': 3.5726}
+{',': 5991, ';': 14, '-': 1885, "'": 439, 'also': 34, 'although': 3, 'and': 3128, 'as': 416, 'because': 34, 'before': 47, 'but': 510, 'for': 456, 'if': 202, 'nor': 10, 'of': 1917, 'or': 169, 'since': 12, 'that': 407, 'though': 25, 'until': 5, 'when': 103, 'whenever': 1, 'whereas': 6, 'which': 197, 'while': 32, 'yet': 60, 'words_per_sentence': 12.818, 'sentences_per_par': 3.7677}
+
+main(testBase +"Lawrence_Unconsiousness.txt", testBase + "Lawrence_Sea_Sardinia.txt","composite")
+1887.436
+{',': 4729, ';': 55, '-': 786, "'": 554, 'also': 38, 'although': 4, 'and': 2522, 'as': 454, 'because': 57, 'before': 49, 'but': 484, 'for': 368, 'if': 207, 'nor': 23, 'of': 2434, 'or': 434, 'since': 10, 'that': 491, 'though': 23, 'until': 13, 'when': 159, 'whenever': 0, 'whereas': 5, 'which': 343, 'while': 28, 'yet': 50, 'words_per_sentence': 15.1946, 'sentences_per_par': 5.1393}
+{',': 5991, ';': 14, '-': 1885, "'": 439, 'also': 34, 'although': 3, 'and': 3128, 'as': 416, 'because': 34, 'before': 47, 'but': 510, 'for': 456, 'if': 202, 'nor': 10, 'of': 1917, 'or': 169, 'since': 12, 'that': 407, 'though': 25, 'until': 5, 'when': 103, 'whenever': 1, 'whereas': 6, 'which': 197, 'while': 32, 'yet': 60, 'words_per_sentence': 12.818, 'sentences_per_par': 3.7677}
+
+main(testBase+"Lawson_Children_of_the_Bush.txt",testBase+"lifeOnMississippi.txt","composite")
+5346.9458
+{',': 6472, ';': 488, '-': 1101, "'": 2275, 'also': 16, 'although': 1, 'and': 3790, 'as': 623, 'because': 87, 'before': 116, 'but': 520, 'for': 803, 'if': 306, 'nor': 14, 'of': 2064, 'or': 641, 'since': 31, 'that': 894, 'though': 15, 'until': 38, 'when': 340, 'whenever': 5, 'whereas': 2, 'which': 100, 'while': 98, 'yet': 26, 'words_per_sentence': 18.2912, 'sentences_per_par': 2.5973}
+{',': 10237, ';': 2126, '-': 1675, "'": 1428, 'also': 81, 'although': 17, 'and': 5845, 'as': 873, 'because': 72, 'before': 204, 'but': 969, 'for': 1084, 'if': 357, 'nor': 30, 'of': 4354, 'or': 509, 'since': 59, 'that': 1711, 'though': 29, 'until': 52, 'when': 498, 'whenever': 15, 'whereas': 20, 'which': 480, 'while': 105, 'yet': 83, 'words_per_sentence': 20.6502, 'sentences_per_par': 3.159}
+
+
+

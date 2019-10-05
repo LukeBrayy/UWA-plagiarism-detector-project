@@ -22,6 +22,7 @@ def getPunctuationProfile(fileName):
     profile = {}
     with open(fileName, "r") as text:
         letters = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm']
+        testWords = []
         for line in text: #streams in line by line to avoid loading very large files at once, which make cause performance issues
             profile[','] = profile.get(',', 0) + line.count(",")
             profile[';'] = profile.get(';', 0) + line.count(";")
@@ -36,6 +37,7 @@ def getPunctuationProfile(fileName):
                     try:
                         if word[characterIndex] == "'" and word[characterIndex-1] in letters and characterIndex>0 and word[characterIndex+1] in letters:
                             profile["'"] = profile.get("'", 0) + 1
+                            testWords.append(word)
                     except IndexError:
                         pass #character isn't relevant anyway as it can't be surrounded by letters
 
@@ -44,6 +46,8 @@ def getPunctuationProfile(fileName):
                             profile["-"] = profile.get("-", 0) + 1
                     except IndexError:
                         pass #character isn't relevant anyway as it can't be surrounded by letters
+    print("\n\n\n\n",
+    testWords)
     return(profile)
 
 def getConjuctionProfile(fileName):
@@ -149,7 +153,22 @@ def main(filePath1, filePath2, feature):
     print(profile1)
     print(profile2)
 
-    input(":")
+    """
+    print("\n Differences:")
 
+    test1 = {'also': 6, 'although': 1, 'and': 1282, 'as': 240, 'because': 17, 'before': 33, 'but': 188, 'for': 278, 'if': 117, 'nor': 7, 'of': 820, 'or': 113, 'since': 0, 'that': 340, 'though': 11, 'until': 9, 'when': 106, 'whenever': 0, 'whereas': 0, 'which': 47, 'while': 54, 'yet': 5, ',': 2334, "'": 551, '-': 411, ';': 226, 'words_per_sentence': 19.5435, 'sentences_per_par': 2.6288}
+    test2 = {'also': 4, 'although': 0, 'and': 6422, 'as': 552, 'because': 223, 'before': 163, 'but': 1040, 'for': 873, 'if': 424, 'nor': 61, 'of': 1768, 'or': 393, 'since': 14, 'that': 1081, 'though': 36, 'until': 3, 'when': 430, 'whenever': 11, 'whereas': 1, 'which': 117, 'while': 52, 'yet': 59, ',': 8190, "'": 4454, ';': 1562, '-': 1019, 'words_per_sentence': 18.9841, 'sentences_per_par': 2.5213}
+
+    for item in profile1:
+        if profile1[item] != test1[item]:
+            print(item, "| Mine:", profile1[item], "Yours:", test1[item])
+
+    """
 testBase = "C:/Users/mooki/OneDrive/My Documents/GitHub/cits1401-Project2/project2data/project2data/"
-main(testBase+"sample1.txt", testBase+"sample2.txt", "unigrams")
+#main(testBase+"Banjo_Paterson.txt", testBase+"Hucklebery_Finn.txt","composite")
+#main(testBase +"Lawrence_Kangaroo.txt", testBase + "Lawrence_Sea_Sardinia.txt","composite")
+#main(testBase +"Lawrence_Unconsiousness.txt", testBase + "Lawrence_Sea_Sardinia.txt","composite")
+
+main(testBase+"Lawson_Children_of_the_Bush.txt",testBase+"lifeOnMississippi.txt","composite")
+#main(testBase+"Hucklebery_Finn.txt", testBase+"lifeOnMississippi.txt", "unigrams")
+#Banjo_Paterson.txt
