@@ -17,6 +17,8 @@ def main(filename):
             if line[-1] == "-":
                 print(line)
                 print(allLines[x+1])
+            if "..."  in line:
+                print(filename, x, "-",line)
 for file in findFiles("C:\\Users\\mooki\\OneDrive\\My Documents\\GitHub\\cits1401-Project2\\project2data\\", ".txt"):
     main(file)
     print("donefile")
